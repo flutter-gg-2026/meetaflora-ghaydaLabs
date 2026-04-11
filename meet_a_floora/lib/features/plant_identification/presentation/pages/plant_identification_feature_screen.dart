@@ -73,6 +73,9 @@ class PlantIdentificationFeatureScreen extends StatelessWidget {
                             if (image != null) {
                               cubit.selectedImage = image;
                               final bytes = await image.readAsBytes();
+                              if (context.mounted) {
+                                context.showSnapTips();
+                              }
                               cubit.getPlantIdentificationMethod(
                                 base64Encode(bytes),
                               );
