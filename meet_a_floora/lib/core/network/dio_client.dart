@@ -8,7 +8,7 @@ class DioClient {
   late final Dio _dio;
 
   DioClient() {
-   _dio = Dio(
+    _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
         connectTimeout: const Duration(seconds: 30),
@@ -20,39 +20,21 @@ class DioClient {
         },
       ),
     );
-
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          // Add token here
-          // options.headers['Authorization'] = 'Bearer $token';
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          return handler.next(response);
-        },
-        onError: (error, handler) {
-          return handler.next(error);
-        },
-      ),
-    );
   }
 
   Dio get dio => _dio;
-  Future<Map<String, dynamic>> createIdentificationMethod({required String base64Image}) async {
-    
+  Future<Map<String, dynamic>> createIdentificationMethod({
+    required String base64Image,
+  }) async {
     final data = {
-      
-        "images": ["data:image/jpg;base64,$base64Image"],
-        "similar_images": true,
-      };
-      
+      "images": ["data:image/jpg;base64,$base64Image"],
+      "similar_images": true,
+    };
+
     final response = await dio.post(
       ApiEndpoints.identificationEndpoint,
-      data: data
+      data: data,
     );
     return response.data;
   }
-
- 
 }

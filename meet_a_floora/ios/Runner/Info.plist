@@ -14,6 +14,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSCameraUsageDescription</key>
+<string>This app needs camera access to scan and identify plants.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs access to photos to identify plants from your gallery.</string>
 	<key>CFBundleName</key>
 	<string>meet_a_floora</string>
 	<key>CFBundlePackageType</key>

@@ -5,7 +5,6 @@ import 'package:meet_a_flora/features/plant_identification/data/models/is_planet
 import 'package:meet_a_flora/features/plant_identification/data/models/plant_identification_model.dart';
 import 'package:meet_a_flora/features/plant_identification/data/models/similar_image_model.dart';
 
-
 abstract class BasePlantIdentificationRemoteDataSource {
   Future<PlantIdentificationModel> getPlantIdentification(String base64Image);
 }
@@ -22,42 +21,40 @@ class PlantIdentificationRemoteDataSource
     String base64Image,
   ) async {
     try {
-
       final response = await _dio.createIdentificationMethod(
         base64Image: base64Image,
       );
       final suggestions =
-        response['result']['classification']['suggestions'] as List;
+          response['result']['classification']['suggestions'] as List;
 
-    final suggestion = suggestions.first;
+      final suggestion = suggestions.first;
 
-    final name = suggestion['name'];
-    final probability = suggestion['probability']*100;
+      final name = suggestion['name'];
+      final probability = suggestion['probability'] * 100;
 
-    final similarImage = (suggestion['similar_images'] as List)
-        .map((img) => SimilarImageModel(
+      final similarImage = (suggestion['similar_images'] as List)
+          .map(
+            (img) => SimilarImageModel(
               url: img['url'],
               similarity: (img['similarity'] ?? 0).toDouble(),
-            ))
-        .toList();
+            ),
+          )
+          .toList();
 
-    final isPlant =
-        response['result']['classification']['is_plant'];
-
+      final isPlant = response['result']['classification']['is_plant'];
 
       return PlantIdentificationModel(
         name: name,
         description:
             "Identified as $name with ${(probability).toStringAsFixed(1)}% confidence. "
             "This plant is part of a botanical classification system.",
-         probability: probability ,   
-         similarImages: similarImage, 
-          isPlant: IsPlanetModel(
-            probability: (isPlant?['probability'] ?? 0.0).toDouble(),
-            threshold: (isPlant?['threshold'] ?? 0.0).toDouble(),
-            binary: isPlant?['binary'] ?? false,
-          ),
-
+        probability: probability,
+        similarImages: similarImage,
+        isPlant: IsPlanetModel(
+          probability: (isPlant?['probability'] ?? 0.0).toDouble(),
+          threshold: (isPlant?['threshold'] ?? 0.0).toDouble(),
+          binary: isPlant?['binary'] ?? false,
+        ),
       );
     } catch (error) {
       throw FailureExceptions.getException(error);

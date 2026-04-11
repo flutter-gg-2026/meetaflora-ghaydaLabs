@@ -11,10 +11,7 @@ Future<void> main() async {
   await setup();
   await configureDependencies();
 
-  runApp(
-   MainApp(),
-    
-  );
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -26,13 +23,11 @@ class MainApp extends StatelessWidget {
       builder: (context, orientation, screenType) {
         return MaterialApp.router(
           routerConfig: AppRouter.router,
-          // themeMode: state.themeMode,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
         );
       },
     );
   }
 }
-
